@@ -7,6 +7,18 @@ import PrivateRoute from "./components/common/PrivateRoute";
 import AdminRoute from "./components/common/AdminRoute";
 import ContactForm from "./components/ContactForm";
 import AdminPage from "./pages/AdminPage";
+import { useAuth } from "./hooks/useAuth";
+
+// Role-based route component
+const RoleBasedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { currentUser } = useAuth();
+  
+  if (currentUser?.role === 'admin') {
+    return <Navigate to="/admin" replace />;
+  }
+  
+  return <>{children}</>;
+};
 
 function App() {
   return (
@@ -18,7 +30,9 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/dashboard" element={
               <PrivateRoute>
-                <DashboardPage />
+                <RoleBasedRoute>
+                  <DashboardPage />
+                </RoleBasedRoute>
               </PrivateRoute>
             } />
             <Route path="/admin" element={

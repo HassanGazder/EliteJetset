@@ -30,10 +30,14 @@ const AdminPage: React.FC = () => {
 
     try {
       const response = await adminApi.generateRegistrationLink(email);
-      setRegistrationLink(response.registrationLink);
+      // Get the base URL from environment variable or fallback to window.location.origin
+      const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+      const fullRegistrationLink = `${baseUrl}/register?token=${response.registrationLink}`;
+      setRegistrationLink(fullRegistrationLink);
       setSuccess('Registration link generated successfully!');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to generate registration link. Please try again.');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to generate registration link. Please try again.');
       console.error('Error generating link:', err);
     } finally {
       setIsLoading(false);

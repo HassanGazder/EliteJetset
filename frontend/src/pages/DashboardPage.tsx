@@ -9,7 +9,9 @@ const DashboardPage: React.FC = () => {
   const { currentUser, isAuthenticated } = useAuth();
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
-  const baseUrl = window.location.origin;
+  
+  // Get the base URL from environment variable or fallback to window.location.origin
+  const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
   const referralLink = `${baseUrl}/contact/${currentUser?.username}`;
 
   useEffect(() => {

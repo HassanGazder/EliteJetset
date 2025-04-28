@@ -198,7 +198,7 @@ const RegisterPage: React.FC = () => {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full mt-6"
+                  className="w-full mt-6 bg-gradient-to-r from-orange-500 to-orange-700 py-4 px-6"
                   disabled={isLoading}
                 >
                   {isLoading ? 'Registering...' : 'Register'}

@@ -50,6 +50,16 @@ export const userApi = {
         const response = await api.post('/api/users/login', credentials);
         return response.data;
     },
+
+    getAgentEarnings: async (fromDate: string, untilDate: string) => {
+        const response = await api.get('/api/users/earnings', { params: { fromDate, untilDate } });
+        return response;
+    },
+
+    getAgentProfile: async () => {
+        const response = await api.get('/api/users/profile');
+        return response;
+    },
 };
 
 // Admin related API calls

@@ -9,6 +9,15 @@ interface LocationState {
   message?: string;
 }
 
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+  message?: string;
+}
+
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({
     emailOrUsername: "",
@@ -16,7 +25,7 @@ const LoginPage: React.FC = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [rawError, setRawError] = useState<any>(null);
+  const [rawError, setRawError] = useState<ApiError | null>(null);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -59,15 +68,16 @@ const LoginPage: React.FC = () => {
           navigate("/dashboard");
         }
       }
-    } catch (error: any) {
-      setRawError(error);
-      const errorMessage = error instanceof Error ? error.message : 'Invalid email/username or password';
-      if (typeof error === 'object' && error !== null && 'response' in error && typeof error.response === 'object' && error.response !== null && 'data' in error.response && typeof error.response.data === 'object' && error.response.data !== null && 'message' in error.response.data) {
-        setError(error.response.data.message as string);
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      setRawError(apiError);
+      const errorMessage = apiError instanceof Error ? apiError.message : 'Invalid email/username or password';
+      if (apiError.response?.data?.message) {
+        setError(apiError.response.data.message);
       } else {
         setError(errorMessage);
       }
-      console.error('Login page error:', error);
+      console.error('Login page error:', apiError);
     } finally {
       setIsLoading(false);
     }

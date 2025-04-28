@@ -1,79 +1,137 @@
-import React, { useState } from "react";
-import { Copy, CheckCircle, LogOut } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
+import React, { useState } from 'react';
+import { LogOut } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import EarningsTab from '../components/dashboard/EarningsTab';
+import ProfileTab from '../components/dashboard/ProfileTab';
 
 const DashboardPage: React.FC = () => {
-  const { currentUser, logout } = useAuth();
-  const [copied, setCopied] = useState(false);
-  const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
-  const referralLink = `${baseUrl}/contact/${currentUser?.username}`;
+  const { currentUser: user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('overview');
+  const [stats] = useState({
+    recentVisits: 0,
+    recentReferrals: 0,
+    recentEarnings: 0
+  });
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
-  if (!currentUser) return null;
+  const handleCopyReferralLink = () => {
+    const referralLink = `/contact/${user?.username}`;
+    navigator.clipboard.writeText(window.location.origin + referralLink);
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'overview':
+        return (
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white rounded-lg shadow p-4">
+                <h3 className="text-lg font-medium text-gray-600">Recent Visits</h3>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.recentVisits}</p>
+              </div>
+              <div className="bg-white rounded-lg shadow p-4">
+                <h3 className="text-lg font-medium text-gray-600">Recent Referrals</h3>
+                <p className="text-3xl font-bold text-gray-900 mt-2">{stats.recentReferrals}</p>
+              </div>
+              <div className="bg-white rounded-lg shadow p-4">
+                <h3 className="text-lg font-medium text-gray-600">Recent Earnings</h3>
+                <p className="text-3xl font-bold text-gray-900 mt-2">${stats.recentEarnings}</p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-6">Statistics</h2>
+              <div className="h-[300px] w-full">
+                {/* Graph placeholder - you'll need to implement actual graph */}
+                <div className="w-full h-full bg-gray-50 rounded-lg border flex items-center justify-center">
+                  <p className="text-gray-500">Activity Graph</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 bg-white rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-4">Your Referral Link</h2>
+              <div className="flex gap-4">
+                <input
+                  type="text"
+                  readOnly
+                  value={window.location.origin + `/contact/${user?.username}`}
+                  className="flex-1 p-2 border rounded-md bg-gray-50"
+                />
+                <button
+                  onClick={handleCopyReferralLink}
+                  className="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700"
+                >
+                  Copy Link
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 'earnings':
+        return <EarningsTab />;
+      case 'profile':
+        return <ProfileTab />;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      {/* Logout Button */}
-      <div className="w-full flex justify-end p-4">
-        <button
-          onClick={logout}
-          className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded shadow"
-        >
-          <LogOut className="w-5 h-5" /> Logout
-        </button>
-      </div>
-      {/* Dashboard Card */}
-      <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-8 mt-4">
-        {/* Overview Tabs (static, just Overview highlighted) */}
-        <div className="flex border-b mb-6">
-          <button className="px-6 py-2 font-semibold text-orange-600 border-b-2 border-orange-500 focus:outline-none">Overview</button>
+    <div className="min-h-screen bg-gray-100">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            <LogOut size={20} />
+            Logout
+          </button>
         </div>
-        {/* Overview Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="bg-gray-50 rounded p-4 text-center">
-            <div className="text-sm text-gray-500 mb-1">Recent Visits</div>
-            <div className="text-2xl font-bold text-gray-800">0</div>
+        <div className="bg-white rounded-lg shadow">
+          <div className="border-b">
+            <nav className="flex space-x-4 p-4">
+              <button
+                onClick={() => setActiveTab('overview')}
+                className={`px-4 py-2 rounded ${
+                  activeTab === 'overview'
+                    ? 'bg-orange-500 text-white'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Overview
+              </button>
+              <button
+                onClick={() => setActiveTab('earnings')}
+                className={`px-4 py-2 rounded ${
+                  activeTab === 'earnings'
+                    ? 'bg-orange-500 text-white'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Earnings
+              </button>
+              <button
+                onClick={() => setActiveTab('profile')}
+                className={`px-4 py-2 rounded ${
+                  activeTab === 'profile'
+                    ? 'bg-orange-500 text-white'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Profile
+              </button>
+            </nav>
           </div>
-          <div className="bg-gray-50 rounded p-4 text-center">
-            <div className="text-sm text-gray-500 mb-1">Recent Referrals</div>
-            <div className="text-2xl font-bold text-gray-800">0</div>
-          </div>
-          <div className="bg-gray-50 rounded p-4 text-center">
-            <div className="text-sm text-gray-500 mb-1">Recent Earnings</div>
-            <div className="text-2xl font-bold text-gray-800">0</div>
-          </div>
-        </div>
-        {/* Chart Placeholder */}
-        <div className="bg-white border rounded mb-8" style={{height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <span className="text-gray-400">[Chart Placeholder]</span>
-        </div>
-        {/* Referral Link */}
-        <div className="mt-6">
-          <h4 className="text-lg font-semibold mb-2 text-gray-700">Links</h4>
-          <div className="mb-2 text-sm text-gray-600">Your affiliate URL:</div>
-          <div className="flex">
-            <input
-              type="text"
-              value={referralLink}
-              readOnly
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-white text-sm"
-            />
-            <button
-              onClick={handleCopyLink}
-              className={`bg-orange-200 px-4 py-2 rounded-r-md hover:bg-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-500 text-orange-800`}
-            >
-              {copied ? (
-                <span className="flex items-center gap-1"><CheckCircle className="w-4 h-4" /> Copied!</span>
-              ) : (
-                <span className="flex items-center gap-1"><Copy className="w-4 h-4" /> Copy</span>
-              )}
-            </button>
-          </div>
+          {renderTabContent()}
         </div>
       </div>
     </div>

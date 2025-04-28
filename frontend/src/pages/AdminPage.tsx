@@ -59,7 +59,7 @@ const AdminPage: React.FC = () => {
       <div className="min-h-screen py-12 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-700 py-4 px-6">
+            <div className="bg-gradient-to-r from-orange-500 to-orange-700 py-4 px-6">
               <h2 className="text-xl font-bold text-white">Admin Dashboard</h2>
             </div>
             
@@ -99,7 +99,7 @@ const AdminPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-700 py-4 px-6 rounded-md text-white"
                 >
                   {isLoading ? 'Generating...' : 'Generate Link'}
                 </button>

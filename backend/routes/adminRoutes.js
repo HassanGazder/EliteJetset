@@ -31,23 +31,31 @@ router.post('/generate-registration-link', verifyAdmin, async (req, res) => {
   try {
     const { email } = req.body;
 
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+
     // Generate a registration token that expires in 24 hours
     const registrationToken = jwt.sign(
-      { email, type: 'registration' },
+      { 
+        email: email.toLowerCase(),
+        type: 'registration',
+        timestamp: Date.now()
+      },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
     // Create the registration link
-    const registrationLink = `${process.env.FRONTEND_URL}/register?token=${registrationToken}`;
+    const registrationLink = registrationToken; // Just return the token, let frontend construct the URL
 
     // Send the registration link via email
-    await sendRegistrationLinkEmail(email, registrationLink);
+    await sendRegistrationLinkEmail(email, `${process.env.FRONTEND_URL}/register?token=${registrationToken}`);
 
-    // Return the registration link
+    // Return the registration token
     res.json({
-      message: 'Registration link sent successfully',
-      registrationLink
+      message: 'Registration link generated successfully',
+      registrationLink: registrationToken // Return just the token
     });
   } catch (error) {
     console.error('Error generating registration link:', error);

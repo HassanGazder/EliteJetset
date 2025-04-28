@@ -37,13 +37,24 @@ router.post('/register', async (req, res) => {
       return res.status(403).json({ message: 'Registration token required' });
     }
 
+    let decoded;
     try {
-      const decoded = jwt.verify(registrationToken, process.env.JWT_SECRET);
-      if (decoded.type !== 'registration' || decoded.email !== email) {
-        return res.status(403).json({ message: 'Invalid registration token' });
+      decoded = jwt.verify(registrationToken, process.env.JWT_SECRET);
+      console.log('Decoded token:', decoded);
+      
+      if (decoded.type !== 'registration') {
+        return res.status(403).json({ message: 'Invalid registration token type' });
+      }
+      
+      if (decoded.email.toLowerCase() !== email.toLowerCase()) {
+        return res.status(403).json({ message: 'Email does not match registration token' });
       }
     } catch (error) {
-      return res.status(403).json({ message: 'Invalid or expired registration token' });
+      console.error('Token verification error:', error);
+      if (error.name === 'TokenExpiredError') {
+        return res.status(403).json({ message: 'Registration token has expired' });
+      }
+      return res.status(403).json({ message: 'Invalid registration token' });
     }
 
     // Check if user already exists
@@ -59,10 +70,10 @@ router.post('/register', async (req, res) => {
     const user = new User({
       firstName,
       lastName,
-      email,
-      username,
+      email: email.toLowerCase(),
+      username: username.toLowerCase(),
       password,
-      role: 'agent', // Set role as agent
+      role: 'agent',
       referralCode: userReferralCode
     });
 

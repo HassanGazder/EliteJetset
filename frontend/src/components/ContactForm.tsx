@@ -80,15 +80,14 @@ const ContactForm: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-2xl w-full bg-white rounded-xl shadow-md overflow-hidden">
         <div className="bg-gradient-to-r from-orange-500 to-orange-700 p-6">
           <h2 className="text-2xl font-bold text-white text-center">Contact Us</h2>
           <p className="mt-2 text-white text-center opacity-90">
             Tell us about your dream vacation
           </p>
         </div>
-
         <div className="p-8">
           {submitStatus && (
             <div className={`mb-6 p-4 rounded-md ${

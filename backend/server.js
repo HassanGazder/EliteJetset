@@ -13,7 +13,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',         // local React dev server
   'https://elite-jetset.vercel.app', // deployed frontend on Vercel
-  'https://elitejetset.com',       // main WordPress site
+  'https://elitejetset.apollodigitals.co.uk',       // main WordPress site
 ];
 
 app.use(cors({

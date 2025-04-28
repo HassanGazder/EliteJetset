@@ -107,6 +107,10 @@ router.post('/login', async (req, res) => {
     const { emailOrUsername, password } = req.body;
     console.log('Login attempt:', { emailOrUsername });
 
+    if (!emailOrUsername || !password) {
+      return res.status(400).json({ message: 'Email/username and password are required' });
+    }
+
     // Find user by email or username
     const user = await User.findOne({
       $or: [
@@ -115,22 +119,21 @@ router.post('/login', async (req, res) => {
       ]
     });
 
-    console.log('User found:', user ? 'Yes' : 'No');
-    if (user) {
-      console.log('User details:', {
-        username: user.username,
-        email: user.email,
-        role: user.role
-      });
-    }
-
     if (!user) {
+      console.log('User not found for:', emailOrUsername);
       return res.status(401).json({ message: 'Invalid email/username or password' });
     }
 
+    console.log('User found:', {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role
+    });
+
     // Compare password
     const isMatch = await user.comparePassword(password);
-    console.log('Password match:', isMatch);
+    console.log('Password match result:', isMatch);
 
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid email/username or password' });
@@ -142,6 +145,8 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
+
+    console.log('Login successful for user:', user.username);
 
     res.json({
       message: 'Login successful',
@@ -158,7 +163,10 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ message: 'Error logging in' });
+    res.status(500).json({ 
+      message: 'Error logging in',
+      error: error.message 
+    });
   }
 });
 

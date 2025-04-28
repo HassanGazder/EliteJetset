@@ -8,6 +8,7 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials: true
 });
 
 // Add token to requests if it exists
@@ -18,6 +19,18 @@ api.interceptors.request.use((config) => {
     }
     return config;
 });
+
+// Add response interceptor to handle errors
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 403) {
+            // Handle 403 errors specifically
+            console.error('Access forbidden:', error.response?.data?.message);
+        }
+        return Promise.reject(error);
+    }
+);
 
 // User related API calls
 export const userApi = {

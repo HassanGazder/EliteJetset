@@ -1,24 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Copy, CheckCircle } from "lucide-react";
-import MainLayout from "../components/layouts/MainLayout";
-import Button from "../components/common/Button";
+import React, { useState } from "react";
+import { Copy, CheckCircle, LogOut } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 
 const DashboardPage: React.FC = () => {
-  const { currentUser, isAuthenticated } = useAuth();
+  const { currentUser, logout } = useAuth();
   const [copied, setCopied] = useState(false);
-  const navigate = useNavigate();
-  
-  // Get the base URL from environment variable or fallback to window.location.origin
   const baseUrl = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
   const referralLink = `${baseUrl}/contact/${currentUser?.username}`;
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isAuthenticated, navigate]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -26,110 +14,69 @@ const DashboardPage: React.FC = () => {
     setTimeout(() => setCopied(false), 3000);
   };
 
-  if (!currentUser) {
-    return null;
-  }
+  if (!currentUser) return null;
 
   return (
-    <MainLayout>
-      <div className="min-h-screen py-12 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="mb-8 text-center">
-              <h1 className="text-3xl font-bold text-slate-800 mb-2">
-                Welcome, {currentUser.firstName}!
-              </h1>
-              <p className="text-slate-600">
-                You're now a Wanderlust Travels agent. Share your unique referral link to connect with potential clients.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="bg-gradient-to-r from-teal-600 to-cyan-700 py-4 px-6">
-                <h2 className="text-xl font-bold text-white">Your Agent Dashboard</h2>
-              </div>
-
-              <div className="p-6">
-                <div className="mb-8">
-                  <h3 className="text-lg font-semibold mb-3 text-slate-800">Your Referral Link</h3>
-                  <p className="text-slate-600 mb-4">
-                    Share this unique link with potential clients. When they fill out the contact form, you'll be notified.
-                  </p>
-
-                  <div className="flex items-center">
-                    <div className="flex-grow p-3 bg-slate-50 border border-slate-200 rounded-l-md text-slate-700 break-all">
-                      {referralLink}
-                    </div>
-                    <button
-                      onClick={handleCopyLink}
-                      className={`p-3 flex items-center justify-center ${
-                        copied ? "bg-green-600" : "bg-teal-600 hover:bg-teal-700"
-                      } text-white rounded-r-md transition-colors min-w-20`}
-                    >
-                      {copied ? (
-                        <>
-                          <CheckCircle className="h-5 w-5 mr-1" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-5 w-5 mr-1" />
-                          Copy
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-md">
-                  <h3 className="text-lg font-semibold mb-2 text-amber-800">How It Works</h3>
-                  <ol className="list-decimal list-inside text-amber-700 space-y-2">
-                    <li>Share your unique referral link with potential travelers</li>
-                    <li>When they visit your link, they'll see a contact form</li>
-                    <li>After they submit the form, you'll be notified via email</li>
-                    <li>Follow up with them to help plan their perfect trip</li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="bg-gradient-to-r from-teal-600 to-cyan-700 py-4 px-6">
-                <h2 className="text-xl font-bold text-white">Promotional Resources</h2>
-              </div>
-
-              <div className="p-6">
-                <p className="text-slate-600 mb-4">
-                  Use these resources to effectively promote your travel services on social media and other channels.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="border border-slate-200 rounded-md p-4">
-                    <h3 className="font-medium text-slate-800 mb-2">Social Media Post Template</h3>
-                    <p className="text-slate-600 text-sm">
-                      "Looking to plan your dream vacation? I can help make it perfect! As a Wanderlust Travels agent, I offer personalized travel planning. Contact me here: [YOUR REFERRAL LINK]"
-                    </p>
-                    <Button variant="outline" className="mt-3 text-sm py-2" onClick={handleCopyLink}>
-                      Copy with Link
-                    </Button>
-                  </div>
-                  
-                  <div className="border border-slate-200 rounded-md p-4">
-                    <h3 className="font-medium text-slate-800 mb-2">Email Template</h3>
-                    <p className="text-slate-600 text-sm">
-                      "Hi [NAME], I noticed you mentioned wanting to travel to [DESTINATION]. As a Wanderlust Travels agent, I'd be happy to help plan your trip. Use this link to tell me more: [YOUR REFERRAL LINK]"
-                    </p>
-                    <Button variant="outline" className="mt-3 text-sm py-2" onClick={handleCopyLink}>
-                      Copy with Link
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+      {/* Logout Button */}
+      <div className="w-full flex justify-end p-4">
+        <button
+          onClick={logout}
+          className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded shadow"
+        >
+          <LogOut className="w-5 h-5" /> Logout
+        </button>
+      </div>
+      {/* Dashboard Card */}
+      <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-8 mt-4">
+        {/* Overview Tabs (static, just Overview highlighted) */}
+        <div className="flex border-b mb-6">
+          <button className="px-6 py-2 font-semibold text-orange-600 border-b-2 border-orange-500 focus:outline-none">Overview</button>
+        </div>
+        {/* Overview Stats */}
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="bg-gray-50 rounded p-4 text-center">
+            <div className="text-sm text-gray-500 mb-1">Recent Visits</div>
+            <div className="text-2xl font-bold text-gray-800">0</div>
+          </div>
+          <div className="bg-gray-50 rounded p-4 text-center">
+            <div className="text-sm text-gray-500 mb-1">Recent Referrals</div>
+            <div className="text-2xl font-bold text-gray-800">0</div>
+          </div>
+          <div className="bg-gray-50 rounded p-4 text-center">
+            <div className="text-sm text-gray-500 mb-1">Recent Earnings</div>
+            <div className="text-2xl font-bold text-gray-800">0</div>
+          </div>
+        </div>
+        {/* Chart Placeholder */}
+        <div className="bg-white border rounded mb-8" style={{height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <span className="text-gray-400">[Chart Placeholder]</span>
+        </div>
+        {/* Referral Link */}
+        <div className="mt-6">
+          <h4 className="text-lg font-semibold mb-2 text-gray-700">Links</h4>
+          <div className="mb-2 text-sm text-gray-600">Your affiliate URL:</div>
+          <div className="flex">
+            <input
+              type="text"
+              value={referralLink}
+              readOnly
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md bg-white text-sm"
+            />
+            <button
+              onClick={handleCopyLink}
+              className={`bg-orange-200 px-4 py-2 rounded-r-md hover:bg-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-500 text-orange-800`}
+            >
+              {copied ? (
+                <span className="flex items-center gap-1"><CheckCircle className="w-4 h-4" /> Copied!</span>
+              ) : (
+                <span className="flex items-center gap-1"><Copy className="w-4 h-4" /> Copy</span>
+              )}
+            </button>
           </div>
         </div>
       </div>
-    </MainLayout>
+    </div>
   );
 };
 

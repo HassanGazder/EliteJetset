@@ -82,7 +82,7 @@ const LoginPage: React.FC = () => {
       <div className="min-h-screen py-12 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-teal-600 to-cyan-700 py-4 px-6">
+            <div className="bg-gradient-to-r from-orange-500 to-orange-700 py-4 px-6">
               <div className="flex items-center justify-center text-white">
                 <LogIn className="h-6 w-6 mr-2" />
                 <h2 className="text-xl font-bold">Login to Your Account</h2>
@@ -139,14 +139,14 @@ const LoginPage: React.FC = () => {
                   type="submit"
                   fullWidth
                   isLoading={isLoading}
-                  className="mt-2"
+                  className="bg-gradient-to-r from-orange-500 to-orange-700 py-4 px-6 mt-2"
                 >
                   Login
                 </Button>
                 
                 <p className="mt-4 text-center text-slate-600">
                   Don't have an account?{" "}
-                  <Link to="/register" className="text-teal-600 hover:text-teal-700 font-medium">
+                  <Link to="/register" className="text-orange-600 hover:text-orange-700 font-medium">
                     Register here
                   </Link>
                 </p>

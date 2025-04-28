@@ -104,7 +104,7 @@ const RegisterPage: React.FC = () => {
       <div className="min-h-screen py-12 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-teal-600 to-cyan-700 py-4 px-6">
+            <div className="bg-gradient-to-r from-orange-500 to-orange-700 py-4 px-6">
               <div className="flex items-center justify-center text-white">
                 <UserPlus className="h-6 w-6 mr-2" />
                 <h2 className="text-xl font-bold">Register as Agent</h2>
@@ -119,7 +119,7 @@ const RegisterPage: React.FC = () => {
                   <p className="mt-2">
                     Please contact an administrator to receive an invitation link.
                   </p>
-                  <Link to="/login" className="block mt-3 text-center text-teal-600 hover:text-teal-700">
+                  <Link to="/login" className="block mt-3 text-center text-orange-600 hover:text-orange-700">
                     Back to login
                   </Link>
                 </div>
@@ -217,7 +217,7 @@ const RegisterPage: React.FC = () => {
                     
                     <p className="mt-4 text-center text-sm text-gray-600">
                       Already have an account?{' '}
-                      <Link to="/login" className="text-teal-600 hover:text-teal-700">
+                      <Link to="/login" className="text-orange-600 hover:text-orange-700">
                         Login here
                       </Link>
                     </p>

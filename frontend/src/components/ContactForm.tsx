@@ -82,7 +82,7 @@ const ContactForm: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-        <div className="bg-gradient-to-r from-teal-600 to-cyan-700 p-6">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-700 p-6">
           <h2 className="text-2xl font-bold text-white text-center">Contact Us</h2>
           <p className="mt-2 text-white text-center opacity-90">
             Tell us about your dream vacation
@@ -113,7 +113,7 @@ const ContactForm: React.FC = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500"
                     placeholder="John Doe"
                   />
                 </div>
@@ -131,7 +131,7 @@ const ContactForm: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -149,7 +149,7 @@ const ContactForm: React.FC = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500"
                     placeholder="+1 (555) 000-0000"
                   />
                 </div>
@@ -167,7 +167,7 @@ const ContactForm: React.FC = () => {
                     value={formData.destination}
                     onChange={handleChange}
                     required
-                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500"
                     placeholder="Paris, France"
                   />
                 </div>
@@ -185,7 +185,7 @@ const ContactForm: React.FC = () => {
                     value={formData.travelDate}
                     onChange={handleChange}
                     required
-                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500"
                   />
                 </div>
               </div>
@@ -197,7 +197,7 @@ const ContactForm: React.FC = () => {
                   value={formData.numberOfTravelers}
                   onChange={handleChange}
                   required
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500"
                 >
                   <option value="">Select number of travelers</option>
                   <option value="1">1 Person</option>
@@ -215,7 +215,7 @@ const ContactForm: React.FC = () => {
                   value={formData.budget}
                   onChange={handleChange}
                   required
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500"
                 >
                   <option value="">Select budget range</option>
                   <option value="$0-$2000">$0-$2000</option>
@@ -238,7 +238,7 @@ const ContactForm: React.FC = () => {
                   onChange={handleChange}
                   required
                   rows={4}
-                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-orange-500 focus:border-orange-500"
                   placeholder="Tell us about your dream vacation..."
                 />
               </div>
@@ -247,7 +247,7 @@ const ContactForm: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-teal-600 to-cyan-700 hover:from-teal-700 hover:to-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 ${
+              className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 ${
                 isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
               }`}
             >
